@@ -14,6 +14,15 @@ import ro.pippo.core.PippoSettings;
 
 public class SqlDao implements Dao {
 
+  private static final String READ_RANDOM_WORLD =
+      "SELECT id, randomnumber FROM hello_world.World WHERE id = ?";
+
+  private static final String UPDATE_RANDOM_WORLD =
+      "UPDATE hello_world.World SET randomnumber = ? WHERE id = ?";
+
+  private static final String READ_FORTUNES =
+      "SELECT id, message FROM hello_world.Fortune";
+
   private final BasicDataSource dataSource;
 
   public SqlDao(PippoSettings settings, String keyPreffix) {
@@ -28,74 +37,53 @@ public class SqlDao implements Dao {
     dataSource.setMaxIdle(settings.getInteger(keyPreffix + ".connection.max", 0));
   }
 
-  @Override public World getRandomWorld() throws SQLException {
-    Connection connection = null;
-    PreparedStatement statement = null;
-    try {
-      connection = dataSource.getConnection();
-      statement = connection.prepareStatement(READ_RANDOM_WORLD);
+  @Override public World getRandomWorld() {
+    try (
+        Connection connection = dataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(READ_RANDOM_WORLD)
+    ) {
       statement.setInt(1, Utils.random());
       ResultSet resultSet = statement.executeQuery();
       resultSet.next();
       int id = resultSet.getInt(1);
       int randomNumber = resultSet.getInt(2);
       return new World(id, randomNumber);
-    } finally {
-      if (statement != null) {
-        statement.close();
-      }
-      if (connection != null) {
-        connection.close();
-      }
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
     }
   }
 
-  @Override public void updateRandomWorlds(List<World> models) throws SQLException {
-    Connection connection = null;
-    PreparedStatement statement = null;
-    try {
-      connection = dataSource.getConnection();
-      connection.setAutoCommit(false);
-      statement = connection.prepareStatement(UPDATE_RANDOM_WORLD);
-
-      for (World model : models) {
-        statement.setInt(1, model.randomNumber);
-        statement.setInt(2, model.id);
+  @Override public void updateRandomWorlds(List<World> worlds) {
+    try (
+        Connection connection = dataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(UPDATE_RANDOM_WORLD);
+    ) {
+      for (World world : worlds) {
+        statement.setInt(1, world.randomNumber);
+        statement.setInt(2, world.id);
         statement.addBatch();
       }
       statement.executeBatch();
-      connection.commit();
-    } finally {
-      if (statement != null) {
-        statement.close();
-      }
-      if (connection != null) {
-        connection.close();
-      }
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
     }
   }
 
-  @Override public List<Fortune> getFortunes() throws SQLException {
-    Connection connection = null;
-    PreparedStatement statement = null;
-    try {
-      connection = dataSource.getConnection();
-      statement = connection.prepareStatement(READ_FORTUNES);
+  @Override public List<Fortune> getFortunes() {
+    try (
+        Connection connection = dataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(READ_FORTUNES);
+    ) {
       ResultSet resultSet = statement.executeQuery();
-      List<Fortune> models = new LinkedList<>();
+      List<Fortune> fortunes = new LinkedList<>();
       while (resultSet.next()) {
         int id = resultSet.getInt(1);
         String message = resultSet.getString(2);
-        models.add(new Fortune(id, message));
+        fortunes.add(new Fortune(id, message));
       }
-      return models;
-    } finally {
-      if (statement != null) {
-        statement.close();
-      }
-      if (connection != null) {
-        connection.close();
-      }
+      return fortunes;
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
     }
   }
 }

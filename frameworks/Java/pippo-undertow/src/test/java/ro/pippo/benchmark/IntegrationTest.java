@@ -32,15 +32,37 @@ public class IntegrationTest {
 
     assertJson(execute("/mysql/db"));
     assertJson(execute("/psql/db"));
+    assertJson(execute("/mongo/db"));
 
     assertJson(execute("/mysql/queries"));
+    assertJson(execute("/mysql/queries?queries=-1"));
+    assertJson(execute("/mysql/queries?queries=ABC"));
+    assertJson(execute("/mysql/queries?queries=600"));
     assertJson(execute("/psql/queries"));
+    assertJson(execute("/psql/queries?queries=-1"));
+    assertJson(execute("/psql/queries?queries=ABC"));
+    assertJson(execute("/psql/queries?queries=600"));
+    assertJson(execute("/mongo/queries"));
+    assertJson(execute("/mongo/queries?queries=-1"));
+    assertJson(execute("/mongo/queries?queries=ABC"));
+    assertJson(execute("/mongo/queries?queries=600"));
 
     assertHtml(execute("/mysql/fortunes"));
     assertHtml(execute("/psql/fortunes"));
+    assertHtml(execute("/mongo/fortunes"));
 
     assertJson(execute("/mysql/updates"));
+    assertJson(execute("/mysql/updates?queries=-1"));
+    assertJson(execute("/mysql/updates?queries=ABC"));
+    assertJson(execute("/mysql/updates?queries=600"));
     assertJson(execute("/psql/updates"));
+    assertJson(execute("/psql/updates?queries=-1"));
+    assertJson(execute("/psql/updates?queries=ABC"));
+    assertJson(execute("/psql/updates?queries=600"));
+    assertJson(execute("/mongo/updates"));
+    assertJson(execute("/mongo/updates?queries=-1"));
+    assertJson(execute("/mongo/updates?queries=ABC"));
+    assertJson(execute("/mongo/updates?queries=600"));
 
     assertHelloWorld(execute("/plaintext"));
   }

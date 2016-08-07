@@ -32,6 +32,7 @@
 
     <junit.version>4.12</junit.version>
     <okhttp.version>3.4.1</okhttp.version>
+    <mongo.version>3.2.2</mongo.version>
 
   </properties>
 
@@ -74,6 +75,11 @@
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
       <version>${postgre.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mongodb</groupId>
+      <artifactId>mongo-java-driver</artifactId>
+      <version>${mongo.version}</version>
     </dependency>
 
     <!-- Testing -->
