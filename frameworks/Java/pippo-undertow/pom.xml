@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ro.pippo.benchmark</groupId>
+  <artifactId>pippo-undertow</artifactId>
+  <version>0.1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <name>Pippo Undertow Benchmark</name>
+  <description>Pippo Techempower benchmark with Undertow as server</description>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <properties>
+
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <pippo.version>0.8.0</pippo.version>
+    <java.version>1.8</java.version>
+
+    <dbcp.version>2.1.1</dbcp.version>
+    <mysql.version>5.1.6</mysql.version>
+    <postgre.version>9.4.1209</postgre.version>
+
+  </properties>
+
+  <dependencies>
+
+    <!-- Pippo -->
+    <dependency>
+      <groupId>ro.pippo</groupId>
+      <artifactId>pippo-core</artifactId>
+      <version>${pippo.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>ro.pippo</groupId>
+      <artifactId>pippo-undertow</artifactId>
+      <version>${pippo.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>ro.pippo</groupId>
+      <artifactId>pippo-gson</artifactId>
+      <version>${pippo.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>ro.pippo</groupId>
+      <artifactId>pippo-trimou</artifactId>
+      <version>${pippo.version}</version>
+    </dependency>
+
+    <!-- Databases -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-dbcp2</artifactId>
+      <version>${dbcp.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>${mysql.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>${postgre.version}</version>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+
+      <!-- Java 8 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+          <encoding>UTF-8</encoding>
+        </configuration>
+        <inherited>true</inherited>
+      </plugin>
+
+      <!-- Executable fat jar -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <createDependencyReducedPom>false</createDependencyReducedPom>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <transformers>
+                <transformer
+                  implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>ro.pippo.benchmark.undertow.PippoLauncher</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+</project>
