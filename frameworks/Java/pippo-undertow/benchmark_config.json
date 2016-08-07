@@ -1,0 +1,68 @@
+{
+  "framework": "pippo-undertow",
+  "tests": [
+    {
+      "default": {
+        "setup_file": "setup",
+        "json_url": "/json",
+        "plaintext_url": "/plaintext",
+        "port": 8080,
+        "approach": "Realistic",
+        "classification": "Micro",
+        "database": "None",
+        "framework": "pippo",
+        "language": "Java",
+        "orm": "Raw",
+        "platform": "Undertow",
+        "webserver": "Undertow",
+        "os": "Linux",
+        "database_os": "Linux",
+        "display_name": "pippo",
+        "notes": "",
+        "versus": ""
+      },
+      "mysql": {
+        "setup_file": "setup",
+        "db_url": "/mysql/db",
+        "query_url": "/mysql/queries?queries=",
+        "fortune_url": "/mysql/fortunes",
+        "update_url": "/mysql/update?queries=",
+        "port": 8080,
+        "approach": "Realistic",
+        "classification": "Micro",
+        "database": "mysql",
+        "framework": "pippo",
+        "language": "Java",
+        "orm": "Raw",
+        "platform": "Undertow",
+        "webserver": "Undertow",
+        "os": "Linux",
+        "database_os": "Linux",
+        "display_name": "pippo-undertow-mysql",
+        "notes": "",
+        "versus": ""
+      },
+      "postgres": {
+        "setup_file": "setup",
+        "db_url": "/psql/db",
+        "query_url": "/psql/queries?queries=",
+        "fortune_url": "/psql/fortunes",
+        "update_url": "/psql/update?queries=",
+        "port": 8080,
+        "approach": "Realistic",
+        "classification": "Micro",
+        "database": "Postgres",
+        "framework": "pippo",
+        "language": "Java",
+        "orm": "Raw",
+        "platform": "Undertow",
+        "webserver": "Undertow",
+        "os": "Linux",
+        "database_os": "Linux",
+        "display_name": "pippo-undertow-postgres",
+        "notes": "",
+        "versus": ""
+      }
+    }
+  ]
+}
