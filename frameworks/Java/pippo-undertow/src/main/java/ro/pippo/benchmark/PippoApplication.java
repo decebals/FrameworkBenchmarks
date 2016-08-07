@@ -1,13 +1,13 @@
-package ro.pippo.benchmark.undertow;
+package ro.pippo.benchmark;
 
-import ro.pippo.benchmark.undertow.dao.Dao;
-import ro.pippo.benchmark.undertow.dao.SqlDao;
-import ro.pippo.benchmark.undertow.handlers.Test1Handler;
-import ro.pippo.benchmark.undertow.handlers.Test2Handler;
-import ro.pippo.benchmark.undertow.handlers.Test3Handler;
-import ro.pippo.benchmark.undertow.handlers.Test4Handler;
-import ro.pippo.benchmark.undertow.handlers.Test5Handler;
-import ro.pippo.benchmark.undertow.handlers.Test6Handler;
+import ro.pippo.benchmark.dao.Dao;
+import ro.pippo.benchmark.dao.SqlDao;
+import ro.pippo.benchmark.handlers.Test1Handler;
+import ro.pippo.benchmark.handlers.Test2Handler;
+import ro.pippo.benchmark.handlers.Test3Handler;
+import ro.pippo.benchmark.handlers.Test4Handler;
+import ro.pippo.benchmark.handlers.Test5Handler;
+import ro.pippo.benchmark.handlers.Test6Handler;
 import ro.pippo.core.Application;
 import ro.pippo.trimou.TrimouTemplateEngine;
 

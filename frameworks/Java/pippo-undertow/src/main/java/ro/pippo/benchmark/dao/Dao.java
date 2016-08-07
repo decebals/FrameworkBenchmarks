@@ -1,9 +1,9 @@
-package ro.pippo.benchmark.undertow.dao;
+package ro.pippo.benchmark.dao;
 
 import java.sql.SQLException;
 import java.util.List;
-import ro.pippo.benchmark.undertow.dto.FortuneDto;
-import ro.pippo.benchmark.undertow.dto.WorldDto;
+import ro.pippo.benchmark.model.Fortune;
+import ro.pippo.benchmark.model.World;
 
 public interface Dao {
 
@@ -11,9 +11,9 @@ public interface Dao {
   String UPDATE_RANDOM_WORLD = "UPDATE hello_world.World SET randomnumber = ? WHERE id = ?";
   String READ_FORTUNES = "SELECT id, message FROM hello_world.Fortune";
 
-  WorldDto getRandomWorld() throws SQLException;
+  World getRandomWorld() throws SQLException;
 
-  void updateRandomWorlds(List<WorldDto> dto) throws SQLException;
+  void updateRandomWorlds(List<World> model) throws SQLException;
 
-  List<FortuneDto> getFortunes() throws SQLException;
+  List<Fortune> getFortunes() throws SQLException;
 }

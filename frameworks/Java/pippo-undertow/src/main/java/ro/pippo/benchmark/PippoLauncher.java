@@ -1,4 +1,4 @@
-package ro.pippo.benchmark.undertow;
+package ro.pippo.benchmark;
 
 import ro.pippo.core.Pippo;
 

@@ -1,4 +1,4 @@
-package ro.pippo.benchmark.undertow.dao;
+package ro.pippo.benchmark.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import org.apache.commons.dbcp2.BasicDataSource;
-import ro.pippo.benchmark.undertow.Utils;
-import ro.pippo.benchmark.undertow.dto.FortuneDto;
-import ro.pippo.benchmark.undertow.dto.WorldDto;
+import ro.pippo.benchmark.model.World;
+import ro.pippo.benchmark.Utils;
+import ro.pippo.benchmark.model.Fortune;
 import ro.pippo.core.PippoSettings;
 
 public class SqlDao implements Dao {
@@ -28,18 +28,18 @@ public class SqlDao implements Dao {
     dataSource.setMaxIdle(settings.getInteger(keyPreffix + ".connection.max", 0));
   }
 
-  @Override public WorldDto getRandomWorld() throws SQLException {
+  @Override public World getRandomWorld() throws SQLException {
     Connection connection = null;
     PreparedStatement statement = null;
     try {
       connection = dataSource.getConnection();
-      statement = connection.prepareStatement(Dao.READ_RANDOM_WORLD);
+      statement = connection.prepareStatement(READ_RANDOM_WORLD);
       statement.setInt(1, Utils.random());
       ResultSet resultSet = statement.executeQuery();
       resultSet.next();
       int id = resultSet.getInt(1);
       int randomNumber = resultSet.getInt(2);
-      return new WorldDto(id, randomNumber);
+      return new World(id, randomNumber);
     } finally {
       if (statement != null) {
         statement.close();
@@ -50,17 +50,17 @@ public class SqlDao implements Dao {
     }
   }
 
-  @Override public void updateRandomWorlds(List<WorldDto> dtos) throws SQLException {
+  @Override public void updateRandomWorlds(List<World> models) throws SQLException {
     Connection connection = null;
     PreparedStatement statement = null;
     try {
       connection = dataSource.getConnection();
       connection.setAutoCommit(false);
-      statement = connection.prepareStatement(Dao.UPDATE_RANDOM_WORLD);
+      statement = connection.prepareStatement(UPDATE_RANDOM_WORLD);
 
-      for (WorldDto dto : dtos) {
-        statement.setInt(1, dto.randomNumber);
-        statement.setInt(2, dto.id);
+      for (World model : models) {
+        statement.setInt(1, model.randomNumber);
+        statement.setInt(2, model.id);
         statement.addBatch();
       }
       statement.executeBatch();
@@ -75,20 +75,20 @@ public class SqlDao implements Dao {
     }
   }
 
-  @Override public List<FortuneDto> getFortunes() throws SQLException {
+  @Override public List<Fortune> getFortunes() throws SQLException {
     Connection connection = null;
     PreparedStatement statement = null;
     try {
       connection = dataSource.getConnection();
-      statement = connection.prepareStatement(Dao.READ_FORTUNES);
+      statement = connection.prepareStatement(READ_FORTUNES);
       ResultSet resultSet = statement.executeQuery();
-      List<FortuneDto> dtos = new LinkedList<>();
+      List<Fortune> models = new LinkedList<>();
       while (resultSet.next()) {
         int id = resultSet.getInt(1);
         String message = resultSet.getString(2);
-        dtos.add(new FortuneDto(id, message));
+        models.add(new Fortune(id, message));
       }
-      return dtos;
+      return models;
     } finally {
       if (statement != null) {
         statement.close();

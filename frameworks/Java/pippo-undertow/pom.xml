@@ -109,7 +109,7 @@
               <transformers>
                 <transformer
                   implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>ro.pippo.benchmark.undertow.PippoLauncher</mainClass>
+                  <mainClass>ro.pippo.benchmark.PippoLauncher</mainClass>
                 </transformer>
               </transformers>
             </configuration>

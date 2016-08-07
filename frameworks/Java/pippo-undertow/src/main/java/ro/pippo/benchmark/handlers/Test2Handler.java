@@ -1,20 +1,13 @@
-package ro.pippo.benchmark.undertow.handlers;
+package ro.pippo.benchmark.handlers;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.concurrent.ThreadLocalRandom;
-import ro.pippo.benchmark.undertow.Utils;
-import ro.pippo.benchmark.undertow.dao.Dao;
-import ro.pippo.benchmark.undertow.dto.WorldDto;
+import ro.pippo.benchmark.dao.Dao;
 import ro.pippo.core.HttpConstants;
 import ro.pippo.core.route.RouteContext;
 import ro.pippo.core.route.RouteHandler;
 
-import static ro.pippo.benchmark.undertow.Utils.CONTENT_TYPE_JSON;
-import static ro.pippo.benchmark.undertow.Utils.HEADER_NAME_SERVER;
-import static ro.pippo.benchmark.undertow.Utils.HEADER_VALUE_SERVER;
+import static ro.pippo.benchmark.Utils.CONTENT_TYPE_JSON;
+import static ro.pippo.benchmark.Utils.HEADER_NAME_SERVER;
+import static ro.pippo.benchmark.Utils.HEADER_VALUE_SERVER;
 
 /**
  * Test type 2: Single database query
@@ -49,12 +42,11 @@ public class Test2Handler implements RouteHandler {
 
   @Override public void handle(RouteContext routeContext) {
     try {
-      WorldDto dto = dao.getRandomWorld();
       routeContext
           .getResponse()
           .header(HttpConstants.Header.CONTENT_TYPE, CONTENT_TYPE_JSON)
           .header(HEADER_NAME_SERVER, HEADER_VALUE_SERVER)
-          .json(dto);
+          .json(dao.getRandomWorld());
     } catch (Exception e) {
       routeContext.getResponse().internalError();
     }

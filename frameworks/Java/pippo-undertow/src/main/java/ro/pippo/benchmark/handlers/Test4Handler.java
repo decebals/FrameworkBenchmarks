@@ -1,14 +1,12 @@
-package ro.pippo.benchmark.undertow.handlers;
+package ro.pippo.benchmark.handlers;
 
 import java.util.Collections;
 import java.util.List;
-import ro.pippo.benchmark.undertow.dao.Dao;
-import ro.pippo.benchmark.undertow.dto.FortuneDto;
+import ro.pippo.benchmark.Utils;
+import ro.pippo.benchmark.dao.Dao;
+import ro.pippo.benchmark.model.Fortune;
 import ro.pippo.core.route.RouteContext;
 import ro.pippo.core.route.RouteHandler;
-
-import static ro.pippo.benchmark.undertow.Utils.HEADER_NAME_SERVER;
-import static ro.pippo.benchmark.undertow.Utils.HEADER_VALUE_SERVER;
 
 /**
  * Test type 4: Fortunes
@@ -109,14 +107,14 @@ public class Test4Handler implements RouteHandler {
 
   @Override public void handle(RouteContext routeContext) {
     try {
-      List<FortuneDto> dtos = dao.getFortunes();
-      dtos.add(new FortuneDto(0, "Additional fortune added at request time."));
-      Collections.sort(dtos, (o1, o2) -> o1.message.compareTo(o2.message));
+      List<Fortune> models = dao.getFortunes();
+      models.add(new Fortune(0, "Additional fortune added at request time."));
+      Collections.sort(models, (o1, o2) -> o1.message.compareTo(o2.message));
 
-      routeContext.setLocal("fortunes", dtos);
+      routeContext.setLocal("fortunes", models);
       routeContext
           .getResponse()
-          .header(HEADER_NAME_SERVER, HEADER_VALUE_SERVER)
+          .header(Utils.HEADER_NAME_SERVER, Utils.HEADER_VALUE_SERVER)
           .render("fortune");
     } catch (Exception e) {
       routeContext.getResponse().internalError();

@@ -1,17 +1,17 @@
-package ro.pippo.benchmark.undertow.handlers;
+package ro.pippo.benchmark.handlers;
 
 import java.util.ArrayList;
 import java.util.List;
-import ro.pippo.benchmark.undertow.Utils;
-import ro.pippo.benchmark.undertow.dao.Dao;
-import ro.pippo.benchmark.undertow.dto.WorldDto;
+import ro.pippo.benchmark.Utils;
+import ro.pippo.benchmark.dao.Dao;
+import ro.pippo.benchmark.model.World;
 import ro.pippo.core.HttpConstants;
 import ro.pippo.core.route.RouteContext;
 import ro.pippo.core.route.RouteHandler;
 
-import static ro.pippo.benchmark.undertow.Utils.CONTENT_TYPE_JSON;
-import static ro.pippo.benchmark.undertow.Utils.HEADER_NAME_SERVER;
-import static ro.pippo.benchmark.undertow.Utils.HEADER_VALUE_SERVER;
+import static ro.pippo.benchmark.Utils.CONTENT_TYPE_JSON;
+import static ro.pippo.benchmark.Utils.HEADER_NAME_SERVER;
+import static ro.pippo.benchmark.Utils.HEADER_VALUE_SERVER;
 
 /**
  * Test type 5: Database updates
@@ -50,21 +50,21 @@ public class Test5Handler implements RouteHandler {
 
   @Override public void handle(RouteContext routeContext) {
     int queries = Utils.getQueriesParam(routeContext);
-    List<WorldDto> dtos = new ArrayList<>(queries);
+    List<World> models = new ArrayList<>(queries);
     try {
 
       for (int i = 0; i < queries; i++) {
-        WorldDto dto = dao.getRandomWorld();
-        dto.randomNumber = Utils.random();
-        dtos.add(i, dao.getRandomWorld());
+        World model = dao.getRandomWorld();
+        model.randomNumber = Utils.random();
+        models.add(model);
       }
-      dao.updateRandomWorlds(dtos);
+      dao.updateRandomWorlds(models);
 
       routeContext
           .getResponse()
           .header(HttpConstants.Header.CONTENT_TYPE, CONTENT_TYPE_JSON)
           .header(HEADER_NAME_SERVER, HEADER_VALUE_SERVER)
-          .json(dtos);
+          .json(models);
     } catch (Exception e) {
       routeContext.getResponse().internalError();
     }

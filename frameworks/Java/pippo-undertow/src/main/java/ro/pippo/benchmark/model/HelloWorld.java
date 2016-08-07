@@ -1,12 +1,12 @@
-package ro.pippo.benchmark.undertow.dto;
+package ro.pippo.benchmark.model;
 
-public class HelloWorldDto {
+public class HelloWorld {
 
   public static final String MESSAGE = "Hello, World!";
 
   public String message;
 
-  public HelloWorldDto() {
+  public HelloWorld() {
     this.message = MESSAGE;
   }
 }
